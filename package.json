@@ -1,0 +1,25 @@
+{
+  "name": "vremeabot",
+  "version": "1.0.0",
+  "description": "Bot Vremea in Romania",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "msVremeaBot"
+  },
+  "keywords": [
+    "facebook",
+    "microsoft",
+    "bot",
+    "vremea"
+  ],
+  "author": "Laurentiu Merla",
+  "license": "ISC",
+  "dependencies": {
+    "botbuilder": "^3.4.4",
+    "restify": "^4.2.0"
+  }
+}
