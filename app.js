@@ -81,7 +81,7 @@ bot.dialog('/getWeather', [
             var url = "http://apidev.accuweather.com/currentconditions/v1/" +
                 "1161950.json?" +
                 "language=" + "ro" +
-                "&apikey=hoArfRosT1215"
+                "&apikey=hoArfRosT1215";
 
             request({
                 url: url,
