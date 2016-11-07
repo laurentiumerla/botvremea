@@ -32,13 +32,13 @@ bot.dialog('/', [
         }
     },
     function (session, results) {
-        session.send('Hello %s!', session.userData.name);
+        session.send('Buna %s!', session.userData.name);
     }
 ]);
 
 bot.dialog('/profile', [
     function (session) {
-        builder.Prompts.text(session, 'Hi! What is your name?');
+        builder.Prompts.text(session, 'Buna! Cum te cheama?');
     },
     function (session, results) {
         session.userData.name = results.response;
