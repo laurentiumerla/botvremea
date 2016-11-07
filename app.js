@@ -25,54 +25,54 @@ server.post('/api/messages', connector.listen());
 // Bots Dialogs
 //=========================================================
 
-bot.dialog('/', new builder.IntentDialog()
-    .onBegin([
-        function(session) {
-            console.log('Session: ', session);
-            session.beginDialog('/ensureProfile', session.userData.profile);
-        },
-        function(session, results) {
-            session.userData.profile = results.response;
-            session.send('Buna %(name)s! Imi place %(location)s!', session.userData.profile);
-        }
-    ])
-    .matches(/^Buna/i, function(session) {
+// bot.dialog('/', new builder.IntentDialog()
+//     .onBegin([
+//         function(session) {
+//             console.log('Session: ', session);
+//             session.beginDialog('/ensureProfile', session.userData.profile);
+//         },
+//         function(session, results) {
+//             session.userData.profile = results.response;
+//             session.send('Buna %(name)s! Imi place %(location)s!', session.userData.profile);
+//         }
+//     ])
+//     .matches(/^Buna/i, function(session) {
 
-        // var options = {
-        //     host: 'apidev.accuweather.com'
-        //     // port: 80,
-        //     // path: '/currentconditions/v1/1161950.json?language=ro&apikey=hoArfRosT1215'
-        // };
+//         // var options = {
+//         //     host: 'apidev.accuweather.com'
+//         //     // port: 80,
+//         //     // path: '/currentconditions/v1/1161950.json?language=ro&apikey=hoArfRosT1215'
+//         // };
 
-        // http.get('http://apidev.accuweather.com/currentconditions/v1/1161950.json?language=ro&apikey=hoArfRosT1215', function(res) {
-        //     console.log("Got response: " + res.statusCode);
-        //     console.log("Response: " + res);
-        // }).on('error', function(e) {
-        //     console.log("Got error: " + e.message);
-        // });
+//         // http.get('http://apidev.accuweather.com/currentconditions/v1/1161950.json?language=ro&apikey=hoArfRosT1215', function(res) {
+//         //     console.log("Got response: " + res.statusCode);
+//         //     console.log("Response: " + res);
+//         // }).on('error', function(e) {
+//         //     console.log("Got error: " + e.message);
+//         // });
 
 
 
-        session.send('Buna %(name)s!', session.userData.profile);
-        session.send('Cu ce te pot ajuta?');
-    })
-    .matches(/^vremea/i, function(session) {
-        session.beginDialog('/getWeather', session.userData.profile);
-    })
-    .onDefault(function(session) {
-        session.send("Nu inteleg!");
-    })
-);
+//         session.send('Buna %(name)s!', session.userData.profile);
+//         session.send('Cu ce te pot ajuta?');
+//     })
+//     .matches(/^vremea/i, function(session) {
+//         session.beginDialog('/getWeather', session.userData.profile);
+//     })
+//     .onDefault(function(session) {
+//         session.send("Nu inteleg!");
+//     })
+// );
 
-// bot.dialog('/', [
-//     function(session) {
-//         session.beginDialog('/ensureProfile', session.userData.profile);
-//     },
-//     function(session, results) {
-//         session.userData.profile = results.response;
-//         session.send('Buna %(name)s! Imi place %(location)s!', session.userData.profile);
-//     }
-// ]);
+bot.dialog('/', [
+    function(session) {
+        session.beginDialog('/ensureProfile', session.userData.profile);
+    },
+    function(session, results) {
+        session.userData.profile = results.response;
+        session.send('Buna %(name)s! Imi place %(location)s!', session.userData.profile);
+    }
+]);
 
 bot.dialog('/getWeather', [
     function(session, args) {
