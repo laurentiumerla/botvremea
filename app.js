@@ -51,20 +51,13 @@ bot.dialog('/', new builder.IntentDialog()
         //     console.log("Got error: " + e.message);
         // });
 
-        var url = "http://apidev.accuweather.com/currentconditions/v1/1161950.json?language=ro&apikey=hoArfRosT1215"
 
-        request({
-            url: url,
-            json: true
-        }, function(error, response, body) {
-
-            if (!error && response.statusCode === 200) {
-                console.log(body) // Print the json response
-            }
-        })
 
         session.send('Buna %(name)s!', session.userData.profile);
         session.send('Cu ce te pot ajuta?');
+    })
+    .matchesAny([/^vremea/i], function(session) {
+
     })
     .onDefault(function(session) {
         session.send("Nu inteleg!");
@@ -80,6 +73,32 @@ bot.dialog('/', new builder.IntentDialog()
 //         session.send('Buna %(name)s! Imi place %(location)s!', session.userData.profile);
 //     }
 // ]);
+
+bot.dialog('/getWeather', [
+    function(session, args) {
+        session.dialogData.profile = args || {};
+        if (!session.dialogData.profile.location) {
+            var url = "http://apidev.accuweather.com/currentconditions/v1/" +
+                "1161950.json?" +
+                "language=" + "ro" +
+                "&apikey=hoArfRosT1215"
+
+            request({
+                url: url,
+                json: true
+            }, function(error, response, body) {
+
+                if (!error && response.statusCode === 200) {
+                    console.log(body) // Print the json response
+                    session.dialogData.profile.WeatherText = body.WeatherText;
+                    session.send('Vremea este %(WeatherText)s in %(location)s!', session.dialogData.profile);
+                }
+            })
+        } else {
+            session.beginDialog('/ensureProfile', session.userData.profile);
+        }
+    }
+]);
 
 bot.dialog('/ensureProfile', [
     function(session, args, next) {
