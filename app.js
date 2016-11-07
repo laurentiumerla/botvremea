@@ -34,8 +34,8 @@ bot.dialog('/', [
 ]);
 
 bot.dialog('/ensureProfile', [
-    console.log("QQQQQQQQQQQQQQ");
     function(session, args, next) {
+        console.log("QQQQQQQQQQQQQQ");
         session.dialogData.profile = args || {};
         if (!session.dialogData.profile.name) {
             builder.Prompts.text(session, 'Buna! Cum te cheama?');
