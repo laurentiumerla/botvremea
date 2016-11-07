@@ -38,12 +38,12 @@ bot.dialog('/', new builder.IntentDialog()
     .matches(/^Buna/i, function(session) {
 
         // var options = {
-        //     host: 
+        //     host: 'http://apidev.accuweather.com'
         //     // port: 80,
-        //     // path: '/index.html'
+        //     // path: '/currentconditions/v1/1161950.json?language=ro&apikey=hoArfRosT1215'
         // };
 
-        http.get('http://apidev.accuweather.com/currentconditions/v1/1161950.json?language=ro&apikey=hoArfRosT1215', function(res) {
+        http.get('apidev.accuweather.com/currentconditions/v1/1161950.json?language=ro&apikey=hoArfRosT1215', function(res) {
             console.log("Got response: " + res.statusCode);
         }).on('error', function(e) {
             console.log("Got error: " + e.message);
