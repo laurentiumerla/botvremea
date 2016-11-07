@@ -23,19 +23,36 @@ server.post('/api/messages', connector.listen());
 // Bots Dialogs
 //=========================================================
 
-bot.dialog('/', [
-    function(session) {
-        session.beginDialog('/ensureProfile', session.userData.profile);
-    },
-    function(session, results) {
-        session.userData.profile = results.response;
-        session.send('Buna %(name)s! Imi place %(location)s!', session.userData.profile);
-    }
-]);
+bot.dialog('/', new builder.IntentDialog()
+    .onBegin([
+        function(session) {
+            session.beginDialog('/ensureProfile', session.userData.profile);
+        },
+        function(session, results) {
+            session.userData.profile = results.response;
+            session.send('Buna %(name)s! Imi place %(location)s!', session.userData.profile);
+        }
+    ])
+    .matches(/^Buna/i, function(session) {
+        session.send('Buna %(name)s!', session.userData.profile);
+    })
+    .onDefault(function(session) {
+        session.send("Nu inteleg!");
+    }));
+
+// bot.dialog('/', [
+//     function(session) {
+//         session.beginDialog('/ensureProfile', session.userData.profile);
+//     },
+//     function(session, results) {
+//         session.userData.profile = results.response;
+//         session.send('Buna %(name)s! Imi place %(location)s!', session.userData.profile);
+//     }
+// ]);
 
 bot.dialog('/ensureProfile', [
     function(session, args, next) {
-        console.log("Arguments->",args);
+        console.log("Arguments->", args);
         session.dialogData.profile = args || {};
         if (!session.dialogData.profile.name) {
             builder.Prompts.text(session, 'Buna! Cum te cheama?');
@@ -54,7 +71,7 @@ bot.dialog('/ensureProfile', [
         }
     },
     function(session, results) {
-        
+
         if (results.response) {
             session.dialogData.profile.location = results.response;
         }
