@@ -27,7 +27,7 @@ bot.dialog('/', new builder.IntentDialog()
     .onBegin([
         function(session) {
             console.log('Session: ', session);
-            session.beginDialog('/ensureProfile', session.userData.profile);
+            // session.beginDialog('/ensureProfile', session.userData.profile);
         },
         function(session, results) {
             session.userData.profile = results.response;
