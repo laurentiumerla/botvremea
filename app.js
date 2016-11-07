@@ -26,6 +26,7 @@ server.post('/api/messages', connector.listen());
 bot.dialog('/', new builder.IntentDialog()
     .onBegin([
         function(session) {
+            console.log('Session: ', session);
             session.beginDialog('/ensureProfile', session.userData.profile);
         },
         function(session, results) {
