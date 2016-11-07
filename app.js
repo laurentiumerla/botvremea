@@ -25,44 +25,44 @@ server.post('/api/messages', connector.listen());
 // Bots Dialogs
 //=========================================================
 
-// bot.dialog('/', new builder.IntentDialog()
-//     .onBegin([
-//         function(session) {
-//             console.log('Session: ', session);
-//             session.beginDialog('/ensureProfile', session.userData.profile);
-//         },
-//         function(session, results) {
-//             session.userData.profile = results.response;
-//             session.send('Buna %(name)s! Imi place %(location)s!', session.userData.profile);
-//         }
-//     ])
-//     .matches(/^Buna/i, function(session) {
-//         session.send('Buna %(name)s!', session.userData.profile);
-//         session.send('Cu ce te pot ajuta?');
-//     })
-//     .matches(/^vremea/i, [
-//         function(session) {
-//             session.beginDialog('/getWeather', session.userData.profile);
-//         },
-//         function(session, results) {
-//             session.userData.profile = results.response;
-//             session.send('Vremea este %(weathertext)s in %(location)s!', session.userData.profile);
-//         }
-//     ])
-//     .onDefault(function(session) {
-//         session.send("Nu inteleg!");
-//     })
-// );
+bot.dialog('/', new builder.IntentDialog()
+    .onBegin([
+        function(session) {
+            console.log('Session: ', session);
+            session.beginDialog('/ensureProfile', session.userData.profile);
+        },
+        function(session, results) {
+            session.userData.profile = results.response;
+            session.send('Buna %(name)s! Imi place %(location)s!', session.userData.profile);
+        }
+    ])
+    .matches(/^Buna/i, function(session) {
+        session.send('Buna %(name)s!', session.userData.profile);
+        session.send('Cu ce te pot ajuta?');
+    })
+    .matches(/^vremea/i, [
+        function(session) {
+            session.beginDialog('/getWeather', session.userData.profile);
+        },
+        function(session, results) {
+            session.userData.profile = results.response;
+            session.send('Vremea este %(weathertext)s in %(location)s!', session.userData.profile);
+        }
+    ])
+    .onDefault(function(session) {
+        session.send("Nu inteleg!");
+    })
+);
 
-bot.dialog('/', [
-    function(session) {
-        session.beginDialog('/ensureProfile', session.userData.profile);
-    },
-    function(session, results) {
-        session.userData.profile = results.response;
-        session.send('Buna %(name)s! Imi place %(location)s!', session.userData.profile);
-    }
-]);
+// bot.dialog('/', [
+//     function(session) {
+//         session.beginDialog('/ensureProfile', session.userData.profile);
+//     },
+//     function(session, results) {
+//         session.userData.profile = results.response;
+//         session.send('Buna %(name)s! Imi place %(location)s!', session.userData.profile);
+//     }
+// ]);
 
 bot.dialog('/getWeather', [
     function(session, args) {
