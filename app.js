@@ -56,8 +56,8 @@ bot.dialog('/', new builder.IntentDialog()
         session.send('Buna %(name)s!', session.userData.profile);
         session.send('Cu ce te pot ajuta?');
     })
-    .matchesAny([/^vremea/i], function(session) {
-
+    .matches(/^vremea/i, function(session) {
+        session.beginDialog('/getWeather', session.userData.profile);
     })
     .onDefault(function(session) {
         session.send("Nu inteleg!");
