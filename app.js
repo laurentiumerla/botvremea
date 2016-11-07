@@ -36,6 +36,19 @@ bot.dialog('/', new builder.IntentDialog()
         }
     ])
     .matches(/^Buna/i, function(session) {
+
+        var options = {
+            host: 'http://apidev.accuweather.com/currentconditions/v1/1161950.json?language=ro&apikey=hoArfRosT1215'
+            // port: 80,
+            // path: '/index.html'
+        };
+
+        http.get(options, function(res) {
+            console.log("Got response: " + res.statusCode);
+        }).on('error', function(e) {
+            console.log("Got error: " + e.message);
+        });
+
         session.send('Buna %(name)s!', session.userData.profile);
     })
     .onDefault(function(session) {
