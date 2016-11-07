@@ -33,7 +33,17 @@ bot.dialog('/', [
     },
     function (session, results) {
         session.send('Buna %s!', session.userData.name);
-    }
+        next();
+    },
+
+    function (session, args, next) {
+        if (!session.userData.location) {
+            session.beginDialog('/profile');
+        } else {
+            next();
+        }
+    },
+
 ]);
 
 bot.dialog('/profile', [
@@ -42,6 +52,17 @@ bot.dialog('/profile', [
     },
     function (session, results) {
         session.userData.name = results.response;
+        session.endDialog();
+    }
+]);
+
+
+bot.dialog('/location', [
+    function (session) {
+        builder.Prompts.text(session, 'In ce oras locuiesti?');
+    },
+    function (session, results) {
+        session.userData.location = results.response;
         session.endDialog();
     }
 ]);
