@@ -24,26 +24,6 @@ server.post('/api/messages', connector.listen());
 //=========================================================
 
 bot.dialog('/', [
-    // function (session, args, next) {
-    //     if (!session.userData.name) {
-    //         session.beginDialog('/profile');
-    //     } else {
-    //         next();
-    //     }
-    // },
-    // function (session, results) {
-    //     session.send('Buna %s!', session.userData.name);
-    //     next();
-    // },
-
-    // function (session, args, next) {
-    //     if (!session.userData.location) {
-    //         session.beginDialog('/profile');
-    //     } else {
-    //         next();
-    //     }
-    // },
-
     function(session) {
         session.beginDialog('/ensureProfile', session.userData.profile);
     },
@@ -74,7 +54,7 @@ bot.dialog('/ensureProfile', [
     },
     function(session, results) {
         if (results.response) {
-            session.dialogData.profile.location = results.resplocationnse;
+            session.dialogData.profile.location = results.location;
         }
         session.endDialogWithResult({ response: session.dialogData.profile });
     }
