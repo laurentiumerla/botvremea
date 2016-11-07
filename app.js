@@ -7,7 +7,7 @@ var builder = require('botbuilder');
 
 // Setup Restify Server
 var server = restify.createServer();
-server.listen(process.env.port || process.env.PORT || 3978, function () {
+server.listen(process.env.port || process.env.PORT || 3978, function() {
     console.log('%s listening to %s', server.name, server.url);
 });
 
@@ -24,45 +24,59 @@ server.post('/api/messages', connector.listen());
 //=========================================================
 
 bot.dialog('/', [
-    function (session, args, next) {
-        if (!session.userData.name) {
-            session.beginDialog('/profile');
-        } else {
-            next();
-        }
-    },
-    function (session, results) {
-        session.send('Buna %s!', session.userData.name);
-        next();
-    },
+    // function (session, args, next) {
+    //     if (!session.userData.name) {
+    //         session.beginDialog('/profile');
+    //     } else {
+    //         next();
+    //     }
+    // },
+    // function (session, results) {
+    //     session.send('Buna %s!', session.userData.name);
+    //     next();
+    // },
 
-    function (session, args, next) {
-        if (!session.userData.location) {
-            session.beginDialog('/profile');
-        } else {
-            next();
-        }
-    },
+    // function (session, args, next) {
+    //     if (!session.userData.location) {
+    //         session.beginDialog('/profile');
+    //     } else {
+    //         next();
+    //     }
+    // },
 
-]);
-
-bot.dialog('/profile', [
-    function (session) {
-        builder.Prompts.text(session, 'Buna! Cum te cheama?');
+    function(session) {
+        session.beginDialog('/ensureProfile', session.userData.profile);
     },
-    function (session, results) {
-        session.userData.name = results.response;
-        session.endDialog();
+    function(session, results) {
+        session.userData.profile = results.response;
+        session.send('Buna %(name)! Imi place %(location)!', session.userData.profile);
     }
+
 ]);
 
-
-bot.dialog('/location', [
-    function (session) {
-        builder.Prompts.text(session, 'In ce oras locuiesti?');
+bot.dialog('/ensureProfile', [
+    function(session, args, next) {
+        session.dialogData.profile = args || {};
+        if (!session.dialogData.profile.name) {
+            builder.Prompts.text(session, 'Buna! Cum te cheama?');
+        } else {
+            next();
+        }
     },
-    function (session, results) {
-        session.userData.location = results.response;
-        session.endDialog();
+    function(session, results, next) {
+        if (results.response) {
+            session.dialogData.profile.name = results.response;
+        }
+        if (!session.dialogData.profile.location) {
+            builder.Prompts.text(session, 'In ce oras locuiesti?');
+        } else {
+            next();
+        }
+    },
+    function(session, results) {
+        if (results.response) {
+            session.dialogData.profile.location = results.resplocationnse;
+        }
+        session.endDialogWithResult({ response: session.dialogData.profile });
     }
 ]);
