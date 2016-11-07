@@ -46,7 +46,7 @@ bot.dialog('/', new builder.IntentDialog()
         },
         function(session, results) {
             session.userData.profile = results.response;
-            session.send('Vremea este %(WeatherText)s in %(location)s!', session.userData.profile);
+            session.send('Vremea este %(weathertext)s in %(location)s!', session.userData.profile);
         }
     ])
     .onDefault(function(session) {
@@ -81,8 +81,9 @@ bot.dialog('/getWeather', [
 
                 if (!error && response.statusCode === 200) {
                     console.log(body) // Print the json response
-                    session.dialogData.profile.WeatherText = body['WeatherText'];
-                    session.send('Vremea este %(WeatherText)s in %(location)s!', session.dialogData.profile);
+                    console.log(body['WeatherText']);
+                    session.dialogData.profile.weathertext = body['WeatherText'];
+                    session.send('Vremea este %(weathertext)s in %(location)s!', session.dialogData.profile);
                 }
             })
         } else {
