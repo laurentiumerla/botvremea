@@ -40,14 +40,12 @@ bot.dialog('/', new builder.IntentDialog()
             // path: '/upload',
             method: 'GET'
         };
-
         http.get(options, function(res) {
             console.log("Got response: " + res.statusCode);
             console.log("Response: ", res);
         }).on('error', function(e) {
             console.log("Got error: " + e.message);
         });
-
         session.send('Buna %(name)s!', session.userData.profile);
     })
     .onDefault(function(session) {
