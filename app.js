@@ -77,7 +77,7 @@ bot.dialog('/', new builder.IntentDialog()
 bot.dialog('/getWeather', [
     function(session, args) {
         session.dialogData.profile = args || {};
-        if (!session.dialogData.profile.location) {
+        if (session.dialogData.profile.location) {
             var url = "http://apidev.accuweather.com/currentconditions/v1/" +
                 "1161950.json?" +
                 "language=" + "ro" +
@@ -97,6 +97,7 @@ bot.dialog('/getWeather', [
         } else {
             session.beginDialog('/ensureProfile', session.userData.profile);
         }
+        session.endDialogWithResult({ response: session.dialogData.profile });
     }
 ]);
 
