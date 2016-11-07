@@ -1,6 +1,7 @@
 var restify = require('restify');
 var builder = require('botbuilder');
-var http = require('http');
+// var http = require('http');
+var request = require("request")
 
 //=========================================================
 // Bot Setup
@@ -43,14 +44,27 @@ bot.dialog('/', new builder.IntentDialog()
         //     // path: '/currentconditions/v1/1161950.json?language=ro&apikey=hoArfRosT1215'
         // };
 
-        http.get('http://apidev.accuweather.com/currentconditions/v1/1161950.json?language=ro&apikey=hoArfRosT1215', function(res) {
-            console.log("Got response: " + res.statusCode);
-            console.log("Response: " + res);
-        }).on('error', function(e) {
-            console.log("Got error: " + e.message);
-        });
+        // http.get('http://apidev.accuweather.com/currentconditions/v1/1161950.json?language=ro&apikey=hoArfRosT1215', function(res) {
+        //     console.log("Got response: " + res.statusCode);
+        //     console.log("Response: " + res);
+        // }).on('error', function(e) {
+        //     console.log("Got error: " + e.message);
+        // });
+
+        var url = "http://apidev.accuweather.com/currentconditions/v1/1161950.json?language=ro&apikey=hoArfRosT1215"
+
+        request({
+            url: url,
+            json: true
+        }, function(error, response, body) {
+
+            if (!error && response.statusCode === 200) {
+                console.log(body) // Print the json response
+            }
+        })
 
         session.send('Buna %(name)s!', session.userData.profile);
+        session.send('Cu ce te pot ajuta?');
     })
     .onDefault(function(session) {
         session.send("Nu inteleg!");
