@@ -5,12 +5,19 @@ var builder = require('botbuilder');
 // Bot Setup
 //=========================================================
 
+console.log("PORT -> ", process.env.PORT);
+console.log("port -> ", process.env.port);
+
+
+
 // Setup Restify Server
 var server = restify.createServer();
 server.listen(process.env.port || process.env.PORT || 3978, function () {
    console.log('%s listening to %s', server.name, server.url); 
 });
-  
+
+console.log("Server -> ", server); 
+
 // Create chat bot
 var connector = new builder.ChatConnector({
     appId: process.env.MICROSOFT_APP_ID,
