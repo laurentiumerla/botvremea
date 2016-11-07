@@ -53,6 +53,7 @@ bot.dialog('/ensureProfile', [
         }
     },
     function(session, results) {
+        console.log("location:", results);
         if (results.response) {
             session.dialogData.profile.location = results.response;
         }
