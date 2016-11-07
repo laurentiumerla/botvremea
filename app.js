@@ -40,9 +40,15 @@ bot.dialog('/', new builder.IntentDialog()
         session.send('Buna %(name)s!', session.userData.profile);
         session.send('Cu ce te pot ajuta?');
     })
-    .matches(/^vremea/i, function(session) {
-        session.beginDialog('/getWeather', session.userData.profile);
-    })
+    .matches(/^vremea/i, [
+        function(session) {
+            session.beginDialog('/getWeather', session.userData.profile);
+        },
+        function(session, results) {
+            session.userData.profile = results.response;
+            session.send('Vremea este %(WeatherText)s in %(location)s!', session.userData.profile);
+        }
+    ])
     .onDefault(function(session) {
         session.send("Nu inteleg!");
     })
@@ -75,7 +81,7 @@ bot.dialog('/getWeather', [
 
                 if (!error && response.statusCode === 200) {
                     console.log(body) // Print the json response
-                    session.dialogData.profile.WeatherText = body.WeatherText;
+                    session.dialogData.profile.WeatherText = body['WeatherText'];
                     session.send('Vremea este %(WeatherText)s in %(location)s!', session.dialogData.profile);
                 }
             })
