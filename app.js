@@ -45,6 +45,7 @@ bot.dialog('/', new builder.IntentDialog()
 
         http.get('http://apidev.accuweather.com/currentconditions/v1/1161950.json?language=ro&apikey=hoArfRosT1215', function(res) {
             console.log("Got response: " + res.statusCode);
+            console.log("Response: " + res);
         }).on('error', function(e) {
             console.log("Got error: " + e.message);
         });
