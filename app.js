@@ -34,6 +34,7 @@ bot.dialog('/', [
 ]);
 
 bot.dialog('/ensureProfile', [
+    console.log("QQQQQQQQQQQQQQ");
     function(session, args, next) {
         session.dialogData.profile = args || {};
         if (!session.dialogData.profile.name) {
@@ -53,7 +54,7 @@ bot.dialog('/ensureProfile', [
         }
     },
     function(session, results) {
-        console.log("location:", results);
+        
         if (results.response) {
             session.dialogData.profile.location = results.response;
         }
