@@ -36,10 +36,10 @@ bot.dialog('/', new builder.IntentDialog()
     ])
     .matches(/^Buna/i, function(session) {
         var options = {
-            host: 'http://apidev.accuweather.com/currentconditions/v1/1161950.json?language=ro&apikey=hoArfRosT1215',
+            host: 'http://apidev.accuweather.com/currentconditions/v1/1161950.json?language=ro&apikey=hoArfRosT1215'
             // port: 80,
             // path: '/upload',
-            method: 'GET'
+            // method: 'GET'
         };
         http.get(options, function(res) {
             console.log("Got response: " + res.statusCode);
