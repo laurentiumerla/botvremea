@@ -29,7 +29,7 @@ bot.dialog('/', [
     },
     function(session, results) {
         session.userData.profile = results.response;
-        session.send('Buna %(name)! Imi place %(location)!', session.userData.profile);
+        session.send('Buna %(name)s! Imi place %(location)s!', session.userData.profile);
     }
 ]);
 
