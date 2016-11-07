@@ -51,7 +51,6 @@ bot.dialog('/', [
         session.userData.profile = results.response;
         session.send('Buna %(name)! Imi place %(location)!', session.userData.profile);
     }
-
 ]);
 
 bot.dialog('/ensureProfile', [
