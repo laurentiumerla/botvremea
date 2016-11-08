@@ -80,7 +80,7 @@ bot.dialog('/getWeather', [
             }, function(error, response, body) {
                 if (!error && response.statusCode === 200) {
                     console.log(body) // Print the json response
-                    console.log(session.dialogData.profile.weathertext);
+                    console.log(session.dialogData.profile);
                     session.dialogData.profile.weathertext = body[0].WeatherText;
                     session.send('Vremea este %(weathertext)s in %(location)s!', session.dialogData.profile);
                 }
