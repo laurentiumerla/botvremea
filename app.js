@@ -64,27 +64,46 @@ bot.dialog('/', new builder.IntentDialog()
 //     }
 // ]);
 
+
+var ACCUWEATHER_API_KEY = "hoArfRosT1215";
+var ACCUWEATHER_LANGUAGE = "ro";
+
 bot.dialog('/getWeather', [
     function(session, args) {
         session.dialogData.profile = args || {};
         console.log('getWeather for ', session.dialogData.profile.location);
         if (session.dialogData.profile.location) {
-            var url = "http://apidev.accuweather.com/currentconditions/v1/" +
-                "1161950.json?" +
-                "language=" + "ro" +
-                "&apikey=hoArfRosT1215";
+            var locationUrl = "http://apidev.accuweather.com/locations/v1/search?q=" +
+                session.dialogData.profile.location +
+                "&apikey=" + ACCUWEATHER_API_KEY;
 
             request({
-                url: url,
+                url: locationUrl,
                 json: true
             }, function(error, response, body) {
                 if (!error && response.statusCode === 200) {
                     console.log(body) // Print the json response
-                    console.log(session.dialogData.profile);
-                    session.dialogData.profile.weathertext = body[0].WeatherText;
-                    session.send('Vremea este %(weathertext)s in %(location)s!', session.dialogData.profile);
-                    session.endDialogWithResult({ response: session.dialogData.profile });
+                    var msg, locationKey = null;
+                    locationKey = data[0].Key;
+                    console.log("One location found: <b>" + data[0].LocalizedName + "</b>. Key: " + locationKey)
+
+                    currentConditionsUrl = "http://apidev.accuweather.com/currentconditions/v1/" +
+                        locationKey + ".json?language=" + ACCUWEATHER_LANGUAGE + "&apikey=" + ACCUWEATHER_API_KEY;
+                    request({
+                        url: locationUrl,
+                        json: true
+                    }, function(error, response, body) {
+                        if (!error && response.statusCode === 200) {
+                            console.log(body) // Print the json response
+                            session.dialogData.profile.weathertext = body[0].WeatherText;
+                            session.endDialogWithResult({ response: session.dialogData.profile });
+                        } else {
+                            console.log("Accuweather call error:");
+                            session.endDialogWithResult({ response: session.dialogData.profile });
+                        }
+                    })
                 } else {
+                    console.log("Accuweather call error:");
                     session.endDialogWithResult({ response: session.dialogData.profile });
                 }
             })
@@ -92,7 +111,7 @@ bot.dialog('/getWeather', [
             session.beginDialog('/ensureProfile', session.dialogData.profile);
             session.endDialogWithResult({ response: session.dialogData.profile });
         }
-        
+
     }
 ]);
 
