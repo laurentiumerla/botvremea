@@ -66,10 +66,12 @@ intents
             // session.userData.profile.location = task.entity;
             // session.beginDialog('/getWeather', session.userData.profile);
             // session.beginDialog('/getWeather', task.entity);
-            var weather = azrGetWeather(task.entity);
-            if (weather){
-                session.send('Vremea este %(Weathertext)s!', weather);
-            }
+            // var weather = azrGetWeather(task.entity);
+            // console.log(weather);
+            // if (weather){
+            //     session.send('Vremea este %(Weathertext)s!', weather);
+            // }
+            azrGetWeather(session, task.entity);
         }
         // },
         // function(session, results) {
@@ -96,7 +98,7 @@ intents
 var ACCUWEATHER_API_KEY = "hoArfRosT1215";
 var ACCUWEATHER_LANGUAGE = "ro";
 
-var azrGetWeather = function(__location) {
+var azrGetWeather = function(__session, __location) {
     if (__location) {
         awxCityLookUp(__location)
             .then(function(data) {
@@ -105,7 +107,8 @@ var azrGetWeather = function(__location) {
                     awxGetCurrentConditions(data[0].Key)
                         .then(function(data) {
                             console.log(data) // Print the json response
-                            return data[0].WeatherText;
+                            // return data[0].WeatherText;
+                            __session.send('Vremea este %(Weathertext)s!', weather);
                         })
                         .catch(function(error) {
                             console.log("Accuweather call error:", error);
