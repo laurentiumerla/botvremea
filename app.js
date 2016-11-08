@@ -97,7 +97,7 @@ bot.dialog('/getWeather', [
                     currentConditionsUrl = "http://apidev.accuweather.com/currentconditions/v1/" +
                         locationKey + ".json?language=" + ACCUWEATHER_LANGUAGE + "&apikey=" + ACCUWEATHER_API_KEY;
                     request({
-                        url: locationUrl,
+                        url: currentConditionsUrl,
                         json: true
                     }, function(error, response, body) {
                         if (!error && response.statusCode === 200) {
