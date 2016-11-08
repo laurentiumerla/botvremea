@@ -98,40 +98,7 @@ intents
 var ACCUWEATHER_API_KEY = "hoArfRosT1215";
 var ACCUWEATHER_LANGUAGE = "ro";
 
-var azrGetWeather = function(__session, __location) {
-    if (__location) {
-        awxCityLookUp(__location)
-            .then(function(data) {
-                console.log(data);
-                if (data.length == 1) {
-                    awxGetCurrentConditions(data[0].Key)
-                        .then(function(data) {
-                            console.log(data) // Print the json response
-                            // return data[0].WeatherText;
-                            __session.send('Sunt %(Temperature.Metric.Value)s %(Temperature.Metric.Unit)s si este %(WeatherText)s!', data[0]);
-                        })
-                        .catch(function(error) {
-                            console.log("AccuWeather call error:", error);
-                            return null;
-                        });
-                }
-                else if (data.length == 0) {
-                    return null;
-                }
-                else {
-                    //Multiple locations found
-                    builder.Prompts.choice(session, "Care dintre locatii te intereseaza?", data);
-                }
-            })
-            .catch(function(error) {
-                console.log("AccuWeather call error:");
-                return null;
-            });
-    }
-    else {
-        return null;
-    }
-}
+
 
 // bot.dialog('/getWeather', [
 //     function(session, args) {
@@ -256,4 +223,39 @@ var awxCityLookUp = function(__freeText) {
     // test cu Plesoiu
     // Gets current conditions for the location.
     return rp({ uri: _uri, json: true });
+}
+
+var azrGetWeather = function(__session, __location) {
+    if (__location) {
+        awxCityLookUp(__location)
+            .then(function(data) {
+                console.log(data);
+                if (data.length == 1) {
+                    awxGetCurrentConditions(data[0].Key)
+                        .then(function(data) {
+                            console.log(data) // Print the json response
+                            // return data[0].WeatherText;
+                            __session.send('Sunt %(Temperature.Metric.Value)s %(Temperature.Metric.Unit)s si este %(WeatherText)s!', data[0]);
+                        })
+                        .catch(function(error) {
+                            console.log("AccuWeather current condition call error:", error);
+                            return null;
+                        });
+                }
+                else if (data.length == 0) {
+                    return null;
+                }
+                else {
+                    console.log("Multiple locations found");
+                    builder.Prompts.choice(__session, "Care dintre locatii te intereseaza?", data);
+                }
+            })
+            .catch(function(error) {
+                console.log("AccuWeather city lookup call error:");
+                return null;
+            });
+    }
+    else {
+        return null;
+    }
 }
