@@ -108,10 +108,10 @@ var azrGetWeather = function(__session, __location) {
                         .then(function(data) {
                             console.log(data) // Print the json response
                             // return data[0].WeatherText;
-                            __session.send('Este %(WeatherText)s!', data[0]);
+                            __session.send('Sunt %(Temperature.Metric.Value)s %(Temperature.Metric.Unit)s si este %(WeatherText)s!', data[0]);
                         })
                         .catch(function(error) {
-                            console.log("Accuweather call error:", error);
+                            console.log("AccuWeather call error:", error);
                             return null;
                         });
                 }
@@ -122,11 +122,9 @@ var azrGetWeather = function(__session, __location) {
                     //Multiple locations found
                     builder.Prompts.choice(session, "Care dintre locatii te intereseaza?", data);
                 }
-
-
             })
             .catch(function(error) {
-                console.log("Accuweather call error:");
+                console.log("AccuWeather call error:");
                 return null;
             });
     }
@@ -135,82 +133,82 @@ var azrGetWeather = function(__session, __location) {
     }
 }
 
-bot.dialog('/getWeather', [
-    function(session, args) {
-        session.dialogData.profile = args || {};
-        // console.log('getWeather for ', session.dialogData.profile.location);
-        if (session.dialogData.profile.location) {
-            awxCityLookUp(session.dialogData.profile.location)
-                .then(function(data) {
-                    console.log(data);
-                    if (data.length == 1) {
-                        awxGetCurrentConditions(data[0].Key)
-                            .then(function(data) {
-                                console.log(data) // Print the json response
-                                session.dialogData.profile.weathertext = data[0].WeatherText;
-                                session.endDialogWithResult({ response: session.dialogData.profile });
-                            })
-                            .catch(function(error) {
-                                console.log("Accuweather call error:", error);
-                                session.endDialogWithResult({ response: session.dialogData.profile });
-                            });
-                    }
-                    else if (data.length == 0) {
-                        session.dialogData.profile.weathertext = undefined;
-                        session.endDialogWithResult({ response: session.dialogData.profile });
-                    }
-                    else {
-                        //Multiple locations found
-                        builder.Prompts.choice(session, "Care dintre locatii te intereseaza?", data);
-                        session.endDialogWithResult({ response: session.dialogData.profile });
-                    }
+// bot.dialog('/getWeather', [
+//     function(session, args) {
+//         session.dialogData.profile = args || {};
+//         // console.log('getWeather for ', session.dialogData.profile.location);
+//         if (session.dialogData.profile.location) {
+//             awxCityLookUp(session.dialogData.profile.location)
+//                 .then(function(data) {
+//                     console.log(data);
+//                     if (data.length == 1) {
+//                         awxGetCurrentConditions(data[0].Key)
+//                             .then(function(data) {
+//                                 console.log(data) // Print the json response
+//                                 session.dialogData.profile.weathertext = data[0].WeatherText;
+//                                 session.endDialogWithResult({ response: session.dialogData.profile });
+//                             })
+//                             .catch(function(error) {
+//                                 console.log("Accuweather call error:", error);
+//                                 session.endDialogWithResult({ response: session.dialogData.profile });
+//                             });
+//                     }
+//                     else if (data.length == 0) {
+//                         session.dialogData.profile.weathertext = undefined;
+//                         session.endDialogWithResult({ response: session.dialogData.profile });
+//                     }
+//                     else {
+//                         //Multiple locations found
+//                         builder.Prompts.choice(session, "Care dintre locatii te intereseaza?", data);
+//                         session.endDialogWithResult({ response: session.dialogData.profile });
+//                     }
 
 
-                })
-                .catch(function(error) {
-                    console.log("Accuweather call error:");
-                    session.endDialogWithResult({ response: session.dialogData.profile });
-                });
+//                 })
+//                 .catch(function(error) {
+//                     console.log("Accuweather call error:");
+//                     session.endDialogWithResult({ response: session.dialogData.profile });
+//                 });
 
 
-            // var locationUrl = "http://apidev.accuweather.com/locations/v1/search?q=" +
-            //     session.dialogData.profile.location +
-            //     "&apikey=" + ACCUWEATHER_API_KEY;
-            // // Gets current location key.
-            // request({
-            //     url: locationUrl,
-            //     json: true
-            // }, function(error, response, body) {
-            //     if (!error && response.statusCode === 200) {
-            //         console.log(body) // Print the json response
-            //         var msg, locationKey = null;
-            //         locationKey = body[0].Key;
-            //         console.log("One location found: <b>" + body[0].LocalizedName + "</b>. Key: " + locationKey)
+//             // var locationUrl = "http://apidev.accuweather.com/locations/v1/search?q=" +
+//             //     session.dialogData.profile.location +
+//             //     "&apikey=" + ACCUWEATHER_API_KEY;
+//             // // Gets current location key.
+//             // request({
+//             //     url: locationUrl,
+//             //     json: true
+//             // }, function(error, response, body) {
+//             //     if (!error && response.statusCode === 200) {
+//             //         console.log(body) // Print the json response
+//             //         var msg, locationKey = null;
+//             //         locationKey = body[0].Key;
+//             //         console.log("One location found: <b>" + body[0].LocalizedName + "</b>. Key: " + locationKey)
 
-            //         awxGetCurrentConditions(locationKey)
-            //             .then(function(body) {
-            //                 console.log(body) // Print the json response
-            //                 session.dialogData.profile.weathertext = body[0].WeatherText;
-            //                 session.endDialogWithResult({ response: session.dialogData.profile });
-            //             })
-            //             .catch(function(error) {
-            //                 console.log("Accuweather call error:", error);
-            //                 session.endDialogWithResult({ response: session.dialogData.profile });
-            //             });
+//             //         awxGetCurrentConditions(locationKey)
+//             //             .then(function(body) {
+//             //                 console.log(body) // Print the json response
+//             //                 session.dialogData.profile.weathertext = body[0].WeatherText;
+//             //                 session.endDialogWithResult({ response: session.dialogData.profile });
+//             //             })
+//             //             .catch(function(error) {
+//             //                 console.log("Accuweather call error:", error);
+//             //                 session.endDialogWithResult({ response: session.dialogData.profile });
+//             //             });
 
 
-            //     } else {
-            //         console.log("Accuweather call error:");
-            //         session.endDialogWithResult({ response: session.dialogData.profile });
-            //     }
-            // })
-        } else {
-            session.beginDialog('/ensureProfile', session.dialogData.profile);
-            session.endDialogWithResult({ response: session.dialogData.profile });
-        }
+//             //     } else {
+//             //         console.log("Accuweather call error:");
+//             //         session.endDialogWithResult({ response: session.dialogData.profile });
+//             //     }
+//             // })
+//         } else {
+//             session.beginDialog('/ensureProfile', session.dialogData.profile);
+//             session.endDialogWithResult({ response: session.dialogData.profile });
+//         }
 
-    }
-]);
+//     }
+// ]);
 
 bot.dialog('/ensureProfile', [
     function(session, args, next) {
