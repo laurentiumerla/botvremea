@@ -128,7 +128,7 @@ bot.dialog('/getWeather', [
                                 session.dialogData.profile.weathertext = body[0].WeatherText;
                                 session.endDialogWithResult({ response: session.dialogData.profile });
                             } else {
-                                console.log("Accuweather call error:");
+                                console.log("Accuweather call error:", error);
                                 session.endDialogWithResult({ response: session.dialogData.profile });
                             }
                         });
