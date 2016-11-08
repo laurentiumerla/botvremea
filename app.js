@@ -40,6 +40,10 @@ bot.dialog('/', new builder.IntentDialog({ recognizers: [recognizer] })
     //         session.send('Buna %(name)s! Imi place %(location)s!', session.userData.profile);
     //     }    
     // ])
+    .begin(function(session) {
+        console.log('Session: ', session);
+        session.beginDialog('/ensureProfile', session.userData.profile);
+    })
     .matches(/^Buna/i, function(session) {
         session.send('Buna %(name)s!', session.userData.profile);
         session.send('Cu ce te pot ajuta?');
