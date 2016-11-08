@@ -195,7 +195,7 @@ var awxGetCurrentConditions = function(__locationKey) {
     //         return null;
     //     }
     // })
-
+    console.log(currentConditionsUrl);
     // Gets current conditions for the location.
     return rp({ uri: currentConditionsUrl, json: true });
 }
