@@ -47,7 +47,19 @@ bot.dialog('/', new builder.IntentDialog({ recognizers: [recognizer] })
     })
     .matches(/^vremea/i, [
         function(session, args) {
-            console.log("Args: ",args);
+            console.log("Args: ", args);
+            var task = builder.EntityRecognizer.findEntity(args.entities, 'Location');
+            console.log(task);
+            session.beginDialog('/getWeather', session.userData.profile);
+        },
+        function(session, results) {
+            session.userData.profile = results.response;
+            session.send('Vremea este %(weathertext)s in %(location)s!', session.userData.profile);
+        }
+    ])
+    .matches('GetWeather', [
+        function(session, args) {
+            console.log("Args: ", args);
             var task = builder.EntityRecognizer.findEntity(args.entities, 'Location');
             console.log(task);
             session.beginDialog('/getWeather', session.userData.profile);
@@ -58,7 +70,7 @@ bot.dialog('/', new builder.IntentDialog({ recognizers: [recognizer] })
         }
     ])
     .onDefault(function(session, args) {
-        console.log("Args: ",args);
+        console.log("Args: ", args);
         session.send("Nu inteleg!");
     })
 );
