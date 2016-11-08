@@ -29,7 +29,15 @@ var recognizer = new builder.LuisRecognizer('https://api.projectoxford.ai/luis/v
 // var intents = new builder.IntentDialog({ recognizers: [recognizer] });
 // bot.dialog('/', intents);
 
-
+bot.dialog('/', [
+    function (session) {
+        session.beginDialog('/ensureProfile', session.userData.profile);
+    },
+    function (session, results) {
+        session.userData.profile = results.response;
+        session.send('Buna %(name)s! Imi place %(location)s!', session.userData.profile);
+    }
+]);
 
 bot.dialog('/', new builder.IntentDialog({ recognizers: [recognizer] })
     // .onBegin([
