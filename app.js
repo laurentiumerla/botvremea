@@ -122,18 +122,15 @@ bot.dialog('/getWeather', [
                     // })
 
                     awxGetCurrentConditions(locationKey)
-                        .then(function(error, response, body) {
-                            if (!error && response.statusCode === 200) {
-                                console.log(body) // Print the json response
-                                session.dialogData.profile.weathertext = body[0].WeatherText;
-                                session.endDialogWithResult({ response: session.dialogData.profile });
-                            } else {
-                                console.log("Accuweather call error:", error);
-                                console.log("Accuweather call response:", response);
-                                session.endDialogWithResult({ response: session.dialogData.profile });
-                            }
+                        .then(function(body) {
+                            console.log(body) // Print the json response
+                            session.dialogData.profile.weathertext = body[0].WeatherText;
+                            session.endDialogWithResult({ response: session.dialogData.profile });
+                        })
+                        .catch(function(error) {
+                            console.log("Accuweather call error:", error);
+                            session.endDialogWithResult({ response: session.dialogData.profile });
                         });
-
 
 
                 } else {
