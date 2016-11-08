@@ -110,6 +110,8 @@ bot.dialog('/getWeather', [
                     }
                     else {
                         //Multiple locations found
+                        builder.Prompts.choice(session, "Care dintre locatii te intereseaza?", data);
+                        session.endDialogWithResult({ response: session.dialogData.profile });
                     }
 
 
