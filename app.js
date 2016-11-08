@@ -26,24 +26,35 @@ server.post('/api/messages', connector.listen());
 // Bots Dialogs
 //=========================================================
 var recognizer = new builder.LuisRecognizer('https://api.projectoxford.ai/luis/v1/application?id=cf83bf53-8b33-4d24-8e19-133749db68da&subscription-key=293077c0e3be4f6390b9e3870637905d');
-// var intents = new builder.IntentDialog({ recognizers: [recognizer] });
-// bot.dialog('/', intents);
+var intents = new builder.IntentDialog({ recognizers: [recognizer] });
+bot.dialog('/', [
+    function(session) {
+        console.log('Session: ', session);
+        session.beginDialog('/ensureProfile', session.userData.profile);
+    },
+    function(session, results) {
+        session.userData.profile = results.response;
+        session.send('Buna %(name)s! Imi place %(location)s!', session.userData.profile);
+    }
 
-bot.dialog('/', new builder.IntentDialog({ recognizers: [recognizer] })
-    // .onBegin([
-    //     function(session) {
-    //         console.log('Session: ', session);
-    //         session.beginDialog('/ensureProfile', session.userData.profile);
-    //     },
-    //     function(session, results) {
-    //         session.userData.profile = results.response;
-    //         session.send('Buna %(name)s! Imi place %(location)s!', session.userData.profile);
-    //     }    
-    // ])
-    // .onBegin(function(session) {
-    //     console.log('Session: ', session);
-    //     session.beginDialog('/ensureProfile', session.userData.profile);
-    // })
+    , intents]);
+
+// bot.dialog('/', new builder.IntentDialog({ recognizers: [recognizer] })
+// .onBegin([
+//     function(session) {
+//         console.log('Session: ', session);
+//         session.beginDialog('/ensureProfile', session.userData.profile);
+//     },
+//     function(session, results) {
+//         session.userData.profile = results.response;
+//         session.send('Buna %(name)s! Imi place %(location)s!', session.userData.profile);
+//     }    
+// ])
+// .onBegin(function(session) {
+//     console.log('Session: ', session);
+//     session.beginDialog('/ensureProfile', session.userData.profile);
+// })
+intents
     .matches(/^Buna/i, function(session) {
         session.send('Buna %(name)s!', session.userData.profile);
         session.send('Cu ce te pot ajuta?');
@@ -62,9 +73,9 @@ bot.dialog('/', new builder.IntentDialog({ recognizers: [recognizer] })
             console.log(args);
             var task = builder.EntityRecognizer.findEntity(args.entities, 'Location');
             console.log(session);
-            // session.userData.profile.location = task.entity;
-            // session.beginDialog('/getWeather', session.userData.profile);
-            session.beginDialog('/getWeather', task.entity);
+            session.userData.profile.location = task.entity;
+            session.beginDialog('/getWeather', session.userData.profile);
+            // session.beginDialog('/getWeather', task.entity);
         },
         function(session, results) {
             session.userData.profile = results.response;
@@ -92,12 +103,10 @@ var ACCUWEATHER_LANGUAGE = "ro";
 
 bot.dialog('/getWeather', [
     function(session, args) {
-        // session.dialogData.profile = args || {};
+        session.dialogData.profile = args || {};
         // console.log('getWeather for ', session.dialogData.profile.location);
-        // if (session.dialogData.profile.location) {
-        if (args) {
-            // awxCityLookUp(session.dialogData.profile.location)
-            awxCityLookUp(args)
+        if (session.dialogData.profile.location) {
+            awxCityLookUp(session.dialogData.profile.location)
                 .then(function(data) {
                     console.log(data);
                     if (data.length == 1) {
