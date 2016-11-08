@@ -39,7 +39,7 @@ bot.dialog('/', new builder.IntentDialog({ recognizers: [recognizer] })
     //     function(session, results) {
     //         session.userData.profile = results.response;
     //         session.send('Buna %(name)s! Imi place %(location)s!', session.userData.profile);
-    //     }
+    //     }    
     // ])
     .matches(/^Buna/i, function(session) {
         session.send('Buna %(name)s!', session.userData.profile);
@@ -47,6 +47,7 @@ bot.dialog('/', new builder.IntentDialog({ recognizers: [recognizer] })
     })
     .matches(/^vremea/i, [
         function(session, args) {
+            console.log("Args: ",args);
             var task = builder.EntityRecognizer.findEntity(args.entities, 'Location');
             console.log(task);
             session.beginDialog('/getWeather', session.userData.profile);
