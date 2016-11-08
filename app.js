@@ -1,7 +1,8 @@
 var restify = require('restify');
 var builder = require('botbuilder');
 // var http = require('http');
-var request = require("request")
+var request = require("request");
+var rp = require('request-promise');
 
 //=========================================================
 // Bot Setup
@@ -92,7 +93,7 @@ bot.dialog('/getWeather', [
             var locationUrl = "http://apidev.accuweather.com/locations/v1/search?q=" +
                 session.dialogData.profile.location +
                 "&apikey=" + ACCUWEATHER_API_KEY;
-
+            // Gets current location key.
             request({
                 url: locationUrl,
                 json: true
@@ -103,21 +104,37 @@ bot.dialog('/getWeather', [
                     locationKey = body[0].Key;
                     console.log("One location found: <b>" + body[0].LocalizedName + "</b>. Key: " + locationKey)
 
-                    currentConditionsUrl = "http://apidev.accuweather.com/currentconditions/v1/" +
-                        locationKey + ".json?language=" + ACCUWEATHER_LANGUAGE + "&apikey=" + ACCUWEATHER_API_KEY;
-                    request({
-                        url: currentConditionsUrl,
-                        json: true
-                    }, function(error, response, body) {
-                        if (!error && response.statusCode === 200) {
-                            console.log(body) // Print the json response
-                            session.dialogData.profile.weathertext = body[0].WeatherText;
-                            session.endDialogWithResult({ response: session.dialogData.profile });
-                        } else {
-                            console.log("Accuweather call error:");
-                            session.endDialogWithResult({ response: session.dialogData.profile });
-                        }
-                    })
+                    // currentConditionsUrl = "http://apidev.accuweather.com/currentconditions/v1/" +
+                    //     locationKey + ".json?language=" + ACCUWEATHER_LANGUAGE + "&apikey=" + ACCUWEATHER_API_KEY;
+                    // // Gets current conditions for the location.
+                    // request({
+                    //     url: currentConditionsUrl,
+                    //     json: true
+                    // }, function(error, response, body) {
+                    //     if (!error && response.statusCode === 200) {
+                    //         console.log(body) // Print the json response
+                    //         session.dialogData.profile.weathertext = body[0].WeatherText;
+                    //         session.endDialogWithResult({ response: session.dialogData.profile });
+                    //     } else {
+                    //         console.log("Accuweather call error:");
+                    //         session.endDialogWithResult({ response: session.dialogData.profile });
+                    //     }
+                    // })
+
+                    awxGetCurrentConditions(locationKey)
+                        .then(function(error, response, body) {
+                            if (!error && response.statusCode === 200) {
+                                console.log(body) // Print the json response
+                                session.dialogData.profile.weathertext = body[0].WeatherText;
+                                session.endDialogWithResult({ response: session.dialogData.profile });
+                            } else {
+                                console.log("Accuweather call error:");
+                                session.endDialogWithResult({ response: session.dialogData.profile });
+                            }
+                        });
+
+
+
                 } else {
                     console.log("Accuweather call error:");
                     session.endDialogWithResult({ response: session.dialogData.profile });
@@ -159,3 +176,26 @@ bot.dialog('/ensureProfile', [
         session.endDialogWithResult({ response: session.dialogData.profile });
     }
 ]);
+
+
+
+
+var awxGetCurrentConditions = function(__locationKey) {
+    currentConditionsUrl = "http://apidev.accuweather.com/currentconditions/v1/" +
+        __locationKey + ".json?language=" + ACCUWEATHER_LANGUAGE + "&apikey=" + ACCUWEATHER_API_KEY;
+
+    // Gets current conditions for the location.
+    // rp({ url: currentConditionsUrl, json: true
+    // }, function(error, response, body) {
+    //     if (!error && response.statusCode === 200) {
+    //         console.log(body) // Print the json response
+    //         return body;
+    //     } else {
+    //         console.log("Accuweather call error:");
+    //         return null;
+    //     }
+    // })
+
+    // Gets current conditions for the location.
+    return rp({ url: currentConditionsUrl, json: true });
+}
