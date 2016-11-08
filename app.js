@@ -212,7 +212,7 @@ bot.dialog('/ensureProfile', [
 var awxGetCurrentConditions = function(__locationKey) {
     _uri = "http://apidev.accuweather.com/currentconditions/v1/" +
         __locationKey + ".json?language=" + ACCUWEATHER_LANGUAGE + "&apikey=" + ACCUWEATHER_API_KEY;
-
+    console.log("Current contitions for key ", __locationKey);
     // Gets current conditions for the location.
     return rp({ uri: _uri, json: true });
 }
@@ -220,7 +220,7 @@ var awxGetCurrentConditions = function(__locationKey) {
 var awxCityLookUp = function(__freeText) {
     var _uri = "http://apidev.accuweather.com/locations/v1/search?q=" +
         __freeText + "&apikey=" + ACCUWEATHER_API_KEY;
-    // test cu Plesoiu
+    console.log("City look up for ", __freeText);
     // Gets current conditions for the location.
     return rp({ uri: _uri, json: true });
 }
@@ -251,7 +251,7 @@ var azrGetWeather = function(__session, __location) {
                 }
             })
             .catch(function(error) {
-                console.log("AccuWeather city lookup call error:");
+                console.log("AccuWeather city lookup call error:", error);
                 return null;
             });
     }
