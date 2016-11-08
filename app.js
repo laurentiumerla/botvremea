@@ -84,8 +84,8 @@ bot.dialog('/getWeather', [
                 if (!error && response.statusCode === 200) {
                     console.log(body) // Print the json response
                     var msg, locationKey = null;
-                    locationKey = data[0].Key;
-                    console.log("One location found: <b>" + data[0].LocalizedName + "</b>. Key: " + locationKey)
+                    locationKey = body[0].Key;
+                    console.log("One location found: <b>" + body[0].LocalizedName + "</b>. Key: " + locationKey)
 
                     currentConditionsUrl = "http://apidev.accuweather.com/currentconditions/v1/" +
                         locationKey + ".json?language=" + ACCUWEATHER_LANGUAGE + "&apikey=" + ACCUWEATHER_API_KEY;
