@@ -75,7 +75,7 @@ intents
     .onDefault(function(session, args) {
         session.send("Nu inteleg!");
     })
-);
+// );
 
 // bot.dialog('/', [
 //     function(session) {
