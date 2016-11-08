@@ -26,16 +26,16 @@ server.post('/api/messages', connector.listen());
 //=========================================================
 
 bot.dialog('/', new builder.IntentDialog()
-    .onBegin([
-        function(session) {
-            console.log('Session: ', session);
-            session.beginDialog('/ensureProfile', session.userData.profile);
-        },
-        function(session, results) {
-            session.userData.profile = results.response;
-            session.send('Buna %(name)s! Imi place %(location)s!', session.userData.profile);
-        }
-    ])
+    // .onBegin([
+    //     function(session) {
+    //         console.log('Session: ', session);
+    //         session.beginDialog('/ensureProfile', session.userData.profile);
+    //     },
+    //     function(session, results) {
+    //         session.userData.profile = results.response;
+    //         session.send('Buna %(name)s! Imi place %(location)s!', session.userData.profile);
+    //     }
+    // ])
     .matches(/^Buna/i, function(session) {
         session.send('Buna %(name)s!', session.userData.profile);
         session.send('Cu ce te pot ajuta?');
