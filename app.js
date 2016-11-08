@@ -46,7 +46,7 @@ bot.dialog('/', new builder.IntentDialog({ recognizers: [recognizer] })
         session.send('Cu ce te pot ajuta?');
     })
     .matches(/^vremea/i, [
-        function(session) {
+        function(session, args) {
             var task = builder.EntityRecognizer.findEntity(args.entities, 'Location');
             console.log(task);
             session.beginDialog('/getWeather', session.userData.profile);
