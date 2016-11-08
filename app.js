@@ -49,15 +49,15 @@ intents
         session.send('Buna %(name)s!', session.userData.profile);
         session.send('Cu ce te pot ajuta?');
     })
-    .matches(/^vremea/i, [
-        function(session, args) {
-            session.beginDialog('/getWeather', session.userData.profile);
-        },
-        function(session, results) {
-            session.userData.profile = results.response;
-            session.send('Vremea este %(weathertext)s in %(location)s!', session.userData.profile);
-        }
-    ])
+    // .matches(/^vremea/i, [
+    //     function(session, args) {
+    //         session.beginDialog('/getWeather', session.userData.profile);
+    //     },
+    //     function(session, results) {
+    //         session.userData.profile = results.response;
+    //         session.send('Vremea este %(weathertext)s in %(location)s!', session.userData.profile);
+    //     }
+    // ])
     .matches('GetWeather', [
         function(session, args) {
             console.log(args);
