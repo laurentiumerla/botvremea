@@ -185,7 +185,7 @@ var awxGetCurrentConditions = function(__locationKey) {
         __locationKey + ".json?language=" + ACCUWEATHER_LANGUAGE + "&apikey=" + ACCUWEATHER_API_KEY;
 
     // Gets current conditions for the location.
-    // rp({ url: currentConditionsUrl, json: true
+    // request({ url: currentConditionsUrl, json: true
     // }, function(error, response, body) {
     //     if (!error && response.statusCode === 200) {
     //         console.log(body) // Print the json response
@@ -197,5 +197,5 @@ var awxGetCurrentConditions = function(__locationKey) {
     // })
 
     // Gets current conditions for the location.
-    return rp({ url: currentConditionsUrl, json: true });
+    return rp({ uri: currentConditionsUrl, json: true });
 }
