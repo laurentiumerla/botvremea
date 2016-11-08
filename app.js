@@ -59,6 +59,7 @@ bot.dialog('/', new builder.IntentDialog({ recognizers: [recognizer] })
         function(session, args) {
             console.log(args);
             var task = builder.EntityRecognizer.findEntity(args.entities, 'Location');
+            console.log(session);
             session.userData.profile.location = task.entity;
             session.beginDialog('/getWeather', session.userData.profile);
         },
