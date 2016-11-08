@@ -108,7 +108,7 @@ var azrGetWeather = function(__session, __location) {
                         .then(function(data) {
                             console.log(data) // Print the json response
                             // return data[0].WeatherText;
-                            __session.send('Vremea este %(Weathertext)s!', data[0]);
+                            __session.send('Vremea este %(WeatherText)s!', data[0]);
                         })
                         .catch(function(error) {
                             console.log("Accuweather call error:", error);
