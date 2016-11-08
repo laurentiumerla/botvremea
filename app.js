@@ -177,34 +177,34 @@ var ACCUWEATHER_LANGUAGE = "ro";
 //     }
 // ]);
 
-bot.dialog('/ensureProfile', [
-    function(session, args, next) {
-        console.log("Arguments->", args);
-        session.dialogData.profile = args || {};
-        if (!session.dialogData.profile.name) {
-            builder.Prompts.text(session, 'Buna! Cum te cheama?');
-        } else {
-            next();
-        }
-    },
-    function(session, results, next) {
-        if (results.response) {
-            session.dialogData.profile.name = results.response;
-        }
-        if (!session.dialogData.profile.location) {
-            builder.Prompts.text(session, 'In ce oras locuiesti?');
-        } else {
-            next();
-        }
-    },
-    function(session, results) {
+// bot.dialog('/ensureProfile', [
+//     function(session, args, next) {
+//         console.log("Arguments->", args);
+//         session.dialogData.profile = args || {};
+//         if (!session.dialogData.profile.name) {
+//             builder.Prompts.text(session, 'Buna! Cum te cheama?');
+//         } else {
+//             next();
+//         }
+//     },
+//     function(session, results, next) {
+//         if (results.response) {
+//             session.dialogData.profile.name = results.response;
+//         }
+//         if (!session.dialogData.profile.location) {
+//             builder.Prompts.text(session, 'In ce oras locuiesti?');
+//         } else {
+//             next();
+//         }
+//     },
+//     function(session, results) {
 
-        if (results.response) {
-            session.dialogData.profile.location = results.response;
-        }
-        session.endDialogWithResult({ response: session.dialogData.profile });
-    }
-]);
+//         if (results.response) {
+//             session.dialogData.profile.location = results.response;
+//         }
+//         session.endDialogWithResult({ response: session.dialogData.profile });
+//     }
+// ]);
 
 
 
