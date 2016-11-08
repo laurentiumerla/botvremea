@@ -90,54 +90,67 @@ bot.dialog('/getWeather', [
         session.dialogData.profile = args || {};
         console.log('getWeather for ', session.dialogData.profile.location);
         if (session.dialogData.profile.location) {
-            var locationUrl = "http://apidev.accuweather.com/locations/v1/search?q=" +
-                session.dialogData.profile.location +
-                "&apikey=" + ACCUWEATHER_API_KEY;
-            // Gets current location key.
-            request({
-                url: locationUrl,
-                json: true
-            }, function(error, response, body) {
-                if (!error && response.statusCode === 200) {
-                    console.log(body) // Print the json response
-                    var msg, locationKey = null;
-                    locationKey = body[0].Key;
-                    console.log("One location found: <b>" + body[0].LocalizedName + "</b>. Key: " + locationKey)
-
-                    // currentConditionsUrl = "http://apidev.accuweather.com/currentconditions/v1/" +
-                    //     locationKey + ".json?language=" + ACCUWEATHER_LANGUAGE + "&apikey=" + ACCUWEATHER_API_KEY;
-                    // // Gets current conditions for the location.
-                    // request({
-                    //     url: currentConditionsUrl,
-                    //     json: true
-                    // }, function(error, response, body) {
-                    //     if (!error && response.statusCode === 200) {
-                    //         console.log(body) // Print the json response
-                    //         session.dialogData.profile.weathertext = body[0].WeatherText;
-                    //         session.endDialogWithResult({ response: session.dialogData.profile });
-                    //     } else {
-                    //         console.log("Accuweather call error:");
-                    //         session.endDialogWithResult({ response: session.dialogData.profile });
-                    //     }
-                    // })
-
-                    awxGetCurrentConditions(locationKey)
-                        .then(function(body) {
-                            console.log(body) // Print the json response
-                            session.dialogData.profile.weathertext = body[0].WeatherText;
-                            session.endDialogWithResult({ response: session.dialogData.profile });
-                        })
-                        .catch(function(error) {
-                            console.log("Accuweather call error:", error);
-                            session.endDialogWithResult({ response: session.dialogData.profile });
-                        });
+            awxCityLookUp(session.dialogData.profile.location)
+                .then(function(data) {
+                    if (data.length == 1) {
+                        awxGetCurrentConditions(data[0].Key)
+                            .then(function(data) {
+                                console.log(data) // Print the json response
+                                session.dialogData.profile.weathertext = data[0].WeatherText;
+                                session.endDialogWithResult({ response: session.dialogData.profile });
+                            })
+                            .catch(function(error) {
+                                console.log("Accuweather call error:", error);
+                                session.endDialogWithResult({ response: session.dialogData.profile });
+                            });
+                    }
+                    else if (data.length == 0) {
+                        session.dialogData.profile.weathertext = undefined;
+                        session.endDialogWithResult({ response: session.dialogData.profile });
+                    }
+                    else {
+                        //Multiple locations found
+                    }
 
 
-                } else {
+                })
+                .catch(function(error) {
                     console.log("Accuweather call error:");
                     session.endDialogWithResult({ response: session.dialogData.profile });
-                }
-            })
+                });
+
+
+            // var locationUrl = "http://apidev.accuweather.com/locations/v1/search?q=" +
+            //     session.dialogData.profile.location +
+            //     "&apikey=" + ACCUWEATHER_API_KEY;
+            // // Gets current location key.
+            // request({
+            //     url: locationUrl,
+            //     json: true
+            // }, function(error, response, body) {
+            //     if (!error && response.statusCode === 200) {
+            //         console.log(body) // Print the json response
+            //         var msg, locationKey = null;
+            //         locationKey = body[0].Key;
+            //         console.log("One location found: <b>" + body[0].LocalizedName + "</b>. Key: " + locationKey)
+
+            //         awxGetCurrentConditions(locationKey)
+            //             .then(function(body) {
+            //                 console.log(body) // Print the json response
+            //                 session.dialogData.profile.weathertext = body[0].WeatherText;
+            //                 session.endDialogWithResult({ response: session.dialogData.profile });
+            //             })
+            //             .catch(function(error) {
+            //                 console.log("Accuweather call error:", error);
+            //                 session.endDialogWithResult({ response: session.dialogData.profile });
+            //             });
+
+
+            //     } else {
+            //         console.log("Accuweather call error:");
+            //         session.endDialogWithResult({ response: session.dialogData.profile });
+            //     }
+            // })
         } else {
             session.beginDialog('/ensureProfile', session.dialogData.profile);
             session.endDialogWithResult({ response: session.dialogData.profile });
@@ -179,21 +192,17 @@ bot.dialog('/ensureProfile', [
 
 
 var awxGetCurrentConditions = function(__locationKey) {
-    currentConditionsUrl = "http://apidev.accuweather.com/currentconditions/v1/" +
+    _uri = "http://apidev.accuweather.com/currentconditions/v1/" +
         __locationKey + ".json?language=" + ACCUWEATHER_LANGUAGE + "&apikey=" + ACCUWEATHER_API_KEY;
 
     // Gets current conditions for the location.
-    // request({ url: currentConditionsUrl, json: true
-    // }, function(error, response, body) {
-    //     if (!error && response.statusCode === 200) {
-    //         console.log(body) // Print the json response
-    //         return body;
-    //     } else {
-    //         console.log("Accuweather call error:");
-    //         return null;
-    //     }
-    // })
-    console.log(currentConditionsUrl);
+    return rp({ uri: _uri, json: true });
+}
+
+var awxCityLookUp = function(__freeText) {
+    var _uri = "http://apidev.accuweather.com/locations/v1/search?q=" +
+        __freeText + "&apikey=" + ACCUWEATHER_API_KEY;
+    // test cu Plesoiu
     // Gets current conditions for the location.
-    return rp({ uri: currentConditionsUrl, json: true });
+    return rp({ uri: _uri, json: true });
 }
