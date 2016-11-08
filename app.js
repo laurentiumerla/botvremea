@@ -57,7 +57,7 @@ bot.dialog('/', new builder.IntentDialog({ recognizers: [recognizer] })
     ])
     .matches('GetWeather', [
         function(session, args) {
-            var task = builder.EntityRecognizer.findEntity(args.entities, 'Location');
+            var task = builder.EntityRecognizer.findEntity(args.entities, 'builtin.geography.city');
             session.userData.profile.location = task.entity;
             session.beginDialog('/getWeather', session.userData.profile);
         },
@@ -92,6 +92,7 @@ bot.dialog('/getWeather', [
         if (session.dialogData.profile.location) {
             awxCityLookUp(session.dialogData.profile.location)
                 .then(function(data) {
+                    console.log(data);
                     if (data.length == 1) {
                         awxGetCurrentConditions(data[0].Key)
                             .then(function(data) {
