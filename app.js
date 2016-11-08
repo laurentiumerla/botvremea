@@ -247,7 +247,7 @@ var azrGetWeather = function(__session, __location) {
                 }
                 else {
                     console.log("Multiple locations found");
-                    builder.Prompts.choice(__session, "Care dintre locatii te intereseaza?", data);
+                    // builder.Prompts.choice(__session, "Care dintre locatii te intereseaza?", data);
                 }
             })
             .catch(function(error) {
