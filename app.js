@@ -24,8 +24,13 @@ server.post('/api/messages', connector.listen());
 //=========================================================
 // Bots Dialogs
 //=========================================================
+var recognizer = new builder.LuisRecognizer('https://api.projectoxford.ai/luis/v1/application?id=cf83bf53-8b33-4d24-8e19-133749db68da&subscription-key=293077c0e3be4f6390b9e3870637905d');
+// var intents = new builder.IntentDialog({ recognizers: [recognizer] });
+// bot.dialog('/', intents);
 
-bot.dialog('/', new builder.IntentDialog()
+
+
+bot.dialog('/', new builder.IntentDialog({ recognizers: [recognizer] })
     // .onBegin([
     //     function(session) {
     //         console.log('Session: ', session);
@@ -42,6 +47,8 @@ bot.dialog('/', new builder.IntentDialog()
     })
     .matches(/^vremea/i, [
         function(session) {
+            var task = builder.EntityRecognizer.findEntity(args.entities, 'Location');
+            console.log(task);
             session.beginDialog('/getWeather', session.userData.profile);
         },
         function(session, results) {
