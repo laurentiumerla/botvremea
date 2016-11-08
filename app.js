@@ -29,6 +29,13 @@ var recognizer = new builder.LuisRecognizer('https://api.projectoxford.ai/luis/v
 var intents = new builder.IntentDialog({ recognizers: [recognizer] });
 bot.dialog('/', intents);
 
+bot.dialog('/',
+    function(session) {
+        session.send('Buna!');
+
+    }
+);
+
 // bot.dialog('/', new builder.IntentDialog({ recognizers: [recognizer] })
 // .onBegin([
 //     function(session) {
