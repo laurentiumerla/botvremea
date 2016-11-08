@@ -57,7 +57,8 @@ bot.dialog('/', new builder.IntentDialog({ recognizers: [recognizer] })
             session.send('Vremea este %(weathertext)s in %(location)s!', session.userData.profile);
         }
     ])
-    .onDefault(function(session) {
+    .onDefault(function(session, args) {
+        console.log("Args: ",args);
         session.send("Nu inteleg!");
     })
 );
