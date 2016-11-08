@@ -40,10 +40,10 @@ bot.dialog('/', new builder.IntentDialog({ recognizers: [recognizer] })
     //         session.send('Buna %(name)s! Imi place %(location)s!', session.userData.profile);
     //     }    
     // ])
-    .onBegin(function(session) {
-        console.log('Session: ', session);
-        session.beginDialog('/ensureProfile', session.userData.profile);
-    })
+    // .onBegin(function(session) {
+    //     console.log('Session: ', session);
+    //     session.beginDialog('/ensureProfile', session.userData.profile);
+    // })
     .matches(/^Buna/i, function(session) {
         session.send('Buna %(name)s!', session.userData.profile);
         session.send('Cu ce te pot ajuta?');
@@ -62,8 +62,9 @@ bot.dialog('/', new builder.IntentDialog({ recognizers: [recognizer] })
             console.log(args);
             var task = builder.EntityRecognizer.findEntity(args.entities, 'Location');
             console.log(session);
-            session.userData.profile.location = task.entity;
-            session.beginDialog('/getWeather', session.userData.profile);
+            // session.userData.profile.location = task.entity;
+            // session.beginDialog('/getWeather', session.userData.profile);
+            session.beginDialog('/getWeather', task.entity);
         },
         function(session, results) {
             session.userData.profile = results.response;
@@ -91,10 +92,12 @@ var ACCUWEATHER_LANGUAGE = "ro";
 
 bot.dialog('/getWeather', [
     function(session, args) {
-        session.dialogData.profile = args || {};
-        console.log('getWeather for ', session.dialogData.profile.location);
-        if (session.dialogData.profile.location) {
-            awxCityLookUp(session.dialogData.profile.location)
+        // session.dialogData.profile = args || {};
+        // console.log('getWeather for ', session.dialogData.profile.location);
+        // if (session.dialogData.profile.location) {
+        if (args) {
+            // awxCityLookUp(session.dialogData.profile.location)
+            awxCityLookUp(args)
                 .then(function(data) {
                     console.log(data);
                     if (data.length == 1) {
