@@ -47,9 +47,6 @@ bot.dialog('/', new builder.IntentDialog({ recognizers: [recognizer] })
     })
     .matches(/^vremea/i, [
         function(session, args) {
-            console.log("Args: ", args);
-            var task = builder.EntityRecognizer.findEntity(args.entities, 'Location');
-            console.log(task);
             session.beginDialog('/getWeather', session.userData.profile);
         },
         function(session, results) {
@@ -59,9 +56,8 @@ bot.dialog('/', new builder.IntentDialog({ recognizers: [recognizer] })
     ])
     .matches('GetWeather', [
         function(session, args) {
-            console.log("Args: ", args);
             var task = builder.EntityRecognizer.findEntity(args.entities, 'Location');
-            console.log(task);
+            session.userData.profile.location = task.entity;
             session.beginDialog('/getWeather', session.userData.profile);
         },
         function(session, results) {
@@ -70,7 +66,6 @@ bot.dialog('/', new builder.IntentDialog({ recognizers: [recognizer] })
         }
     ])
     .onDefault(function(session, args) {
-        console.log("Args: ", args);
         session.send("Nu inteleg!");
     })
 );
