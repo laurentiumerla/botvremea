@@ -129,6 +129,7 @@ bot.dialog('/getWeather', [
                                 session.endDialogWithResult({ response: session.dialogData.profile });
                             } else {
                                 console.log("Accuweather call error:", error);
+                                console.log("Accuweather call response:", response);
                                 session.endDialogWithResult({ response: session.dialogData.profile });
                             }
                         });
