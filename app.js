@@ -83,12 +83,16 @@ bot.dialog('/getWeather', [
                     console.log(session.dialogData.profile);
                     session.dialogData.profile.weathertext = body[0].WeatherText;
                     session.send('Vremea este %(weathertext)s in %(location)s!', session.dialogData.profile);
+                    session.endDialogWithResult({ response: session.dialogData.profile });
+                } else {
+                    session.endDialogWithResult({ response: session.dialogData.profile });
                 }
             })
         } else {
             session.beginDialog('/ensureProfile', session.dialogData.profile);
+            session.endDialogWithResult({ response: session.dialogData.profile });
         }
-        session.endDialogWithResult({ response: session.dialogData.profile });
+        
     }
 ]);
 
