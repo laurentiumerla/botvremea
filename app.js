@@ -215,7 +215,6 @@ var ACCUWEATHER_LANGUAGE = "ro";
 
 
 
-
 var awxGetCurrentConditions = function(__locationKey) {
     _uri = "http://apidev.accuweather.com/currentconditions/v1/" +
         __locationKey + ".json?language=" + ACCUWEATHER_LANGUAGE + "&apikey=" + ACCUWEATHER_API_KEY;
