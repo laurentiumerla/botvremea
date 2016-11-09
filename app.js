@@ -25,8 +25,8 @@ server.post('/api/messages', connector.listen());
 //=========================================================
 // Bots Dialogs
 //=========================================================
-var recognizer = new builder.LuisRecognizer('https://api.projectoxford.ai/luis/v1/application?id=cf83bf53-8b33-4d24-8e19-133749db68da&subscription-key=293077c0e3be4f6390b9e3870637905d');
-var intents = new builder.IntentDialog({ recognizers: [recognizer] });
+// var recognizer = new builder.LuisRecognizer('https://api.projectoxford.ai/luis/v1/application?id=cf83bf53-8b33-4d24-8e19-133749db68da&subscription-key=293077c0e3be4f6390b9e3870637905d');
+// var intents = new builder.IntentDialog({ recognizers: [recognizer] });
 // bot.dialog('/', intents);
 
 bot.dialog('/',
@@ -51,45 +51,45 @@ bot.dialog('/',
 //     console.log('Session: ', session);
 //     session.beginDialog('/ensureProfile', session.userData.profile);
 // })
-intents
-    .matches(/^Buna/i, function(session) {
-        session.send('Buna %(name)s!', session.userData.profile);
-        session.send('Cu ce te pot ajuta?');
-    })
-    // .matches(/^vremea/i, [
-    //     function(session, args) {
-    //         session.beginDialog('/getWeather', session.userData.profile);
-    //     },
-    //     function(session, results) {
-    //         session.userData.profile = results.response;
-    //         session.send('Vremea este %(weathertext)s in %(location)s!', session.userData.profile);
-    //     }
-    // ])
-    .matches('GetWeather', [
-        function(session, args) {
-            console.log(args);
-            var task = builder.EntityRecognizer.findEntity(args.entities, 'Location');
-            // console.log(session);
-            // session.userData.profile.location = task.entity;
-            // session.beginDialog('/getWeather', session.userData.profile);
-            // session.beginDialog('/getWeather', task.entity);
-            // var weather = azrGetWeather(task.entity);
-            // console.log(weather);
-            // if (weather){
-            //     session.send('Vremea este %(Weathertext)s!', weather);
-            // }
-            azrGetWeather(session, task.entity);
-        }
-        // },
-        // function(session, results) {
-        //     session.userData.profile = results.response;
-        //     session.send('Vremea este %(weathertext)s in %(location)s!', session.userData.profile);
-        // }
-    ])
-    .onDefault(function(session, args) {
-        session.send("Nu inteleg!");
-    })
-// );
+// intents
+//     .matches(/^Buna/i, function(session) {
+//         session.send('Buna %(name)s!', session.userData.profile);
+//         session.send('Cu ce te pot ajuta?');
+//     })
+//     // .matches(/^vremea/i, [
+//     //     function(session, args) {
+//     //         session.beginDialog('/getWeather', session.userData.profile);
+//     //     },
+//     //     function(session, results) {
+//     //         session.userData.profile = results.response;
+//     //         session.send('Vremea este %(weathertext)s in %(location)s!', session.userData.profile);
+//     //     }
+//     // ])
+//     .matches('GetWeather', [
+//         function(session, args) {
+//             console.log(args);
+//             var task = builder.EntityRecognizer.findEntity(args.entities, 'Location');
+//             // console.log(session);
+//             // session.userData.profile.location = task.entity;
+//             // session.beginDialog('/getWeather', session.userData.profile);
+//             // session.beginDialog('/getWeather', task.entity);
+//             // var weather = azrGetWeather(task.entity);
+//             // console.log(weather);
+//             // if (weather){
+//             //     session.send('Vremea este %(Weathertext)s!', weather);
+//             // }
+//             azrGetWeather(session, task.entity);
+//         }
+//         // },
+//         // function(session, results) {
+//         //     session.userData.profile = results.response;
+//         //     session.send('Vremea este %(weathertext)s in %(location)s!', session.userData.profile);
+//         // }
+//     ])
+//     .onDefault(function(session, args) {
+//         session.send("Nu inteleg!");
+//     })
+// // );
 
 // bot.dialog('/', [
 //     function(session) {
